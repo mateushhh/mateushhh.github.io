@@ -1,5 +1,40 @@
+/* Default settings are for mobile */
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: Roboto;
+    background-color: black;
+    color: white;
+}
+
+#page {
+    display: flex;
+    flex-direction: column;
+}
+
+#left,
+#main,
+#right {
+    width: 100%;
+}
+
+/* Settings for Desktop users*/
+@media only screen and (min-width: 768px) {
+    #page {
+        flex-direction: row;
+    }
+
+    #main {
+        width: 60%
+    }
+
+    #left,
+    #right {
+        width: 20%;
+    }
+}
+
+h1 {
+    color: deepskyblue;
 }
 
 .timer {

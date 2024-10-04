@@ -7,6 +7,7 @@ function addPerson() {
     if (name) {
         people.push({ name, start: 0, elapsed: 0 });
         displayTimers();
+        document.getElementById('personName').value = '';
     }
 }
 
@@ -76,4 +77,11 @@ function saveResults() {
     link.href = URL.createObjectURL(blob);
     link.download = 'results.txt';
     link.click();
+}
+
+function removePerson(index) {
+    clearInterval(intervals[index]);
+    people.splice(index, 1);
+    intervals.splice(index, 1);
+    displayTimers();
 }
