@@ -26,7 +26,23 @@
             
             <div class="tabs">
                 <button class="tab-button active" onclick="openTab('drivers')">Drivers</button>
-                <button class="tab-button" onclick="openTab('teams')">Teams</button>
+                <button class="tab-button " onclick="openTab('teams')">Teams</button>
+            </div>
+            
+            <div id="results-filter">
+                <label><input type="radio" name="resultType" value="overall" checked> Overall</label>
+                <label><input type="radio" name="resultType" value="SS1"> 1</label>
+                <label><input type="radio" name="resultType" value="SS2"> 2</label>
+                <label><input type="radio" name="resultType" value="SS3"> 3</label>
+                <label><input type="radio" name="resultType" value="SS4"> 4</label>
+                <label><input type="radio" name="resultType" value="SS5"> 5</label>
+                <label><input type="radio" name="resultType" value="SS6"> 6</label>
+                <label><input type="radio" name="resultType" value="SS7"> 7</label>
+                <label><input type="radio" name="resultType" value="SS8"> 8</label>
+                <label><input type="radio" name="resultType" value="SS9"> 9</label>
+                <label><input type="radio" name="resultType" value="SS10"> 10</label>
+                <label><input type="radio" name="resultType" value="SS11"> 11</label>
+                <label><input type="radio" name="resultType" value="SS12"> 12</label>
             </div>
             
             <div id="drivers" class="tab-content active-tab">
@@ -36,7 +52,7 @@
                             <th>Pos</th>
                             <th>Driver</th>
                             <th>Team</th>
-                            <th>Points</th>
+                            <th>Time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +67,7 @@
                         <tr>
                             <th>Pos</th>
                             <th>Team</th>
-                            <th>Points</th>
+                            <th>Time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,7 +80,7 @@
 
     <footer>
         <p>2025 Car Cult Rally Championship</p>
-        <p>&copy; mateushhh </p>
+        <p>&copy; mateushhh</p>
     </footer>
 
     <script src="js/results.js"></script>
