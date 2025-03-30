@@ -2,34 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Multi-Timer Stopwatch</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rally Calendar</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<div id="page">
-    <div id="left"></div>
-    <div id="main">
-        <h1>Multi-Timer Stopwatch</h1>
-    
-        <!-- Form to add names -->
-        <label for="personName">Person Name:</label>
-        <input type="text" id="personName" placeholder="Greg">
-        <button onclick="addPerson()">Add Person</button>
-        
-        <!-- Timer display -->
-        <div id="timers">
-            <div class="timer"></div>
-        
+    <header>
+        <div class="logo">
+            <h1>CCRC</h1>
         </div>
-        
-        <!-- Button to save results -->
-        <button onclick="saveResults()">Save Results</button></div>
-    <div id="right"></div>
-</div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Calendar</a></li>
+                <li><a href="results.html">Results & Standings</a></li>
+                <li><a href="teams.html">Teams & Drivers</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<script src="./script.js"></script>
-<script src="./visual.js"></script>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>2024 World Rally Championship</h2>
+                <p>Follow the adrenaline-fueled action of the WRC season</p>
+            </div>
+        </section>
+
+        <section class="calendar">
+            <h2>Season Calendar</h2>
+            <div class="calendar-container" id="calendar">
+                <!-- Calendar events will be loaded here via JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>2025 Car Cult Rally Championship</p>
+        <p>&copy; mateushhh </p>
+    </footer>
+
+    <script src="js/calendar.js"></script>
+    <script src="js/main.js"></script>
 </body>
-</html>
+</html> 

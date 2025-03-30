@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results & Standings</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>CCRC</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Calendar</a></li>
+                <li><a href="results.html" class="active">Results & Standings</a></li>
+                <li><a href="teams.html">Teams & Drivers</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="results-section">
+            <h2>2025 Championship Standings</h2>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab('drivers')">Drivers</button>
+                <button class="tab-button" onclick="openTab('teams')">Teams</button>
+            </div>
+            
+            <div id="drivers" class="tab-content active-tab">
+                <table id="drivers-standings">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Driver</th>
+                            <th>Team</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="teams" class="tab-content">
+                <table id="teams-standings">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Team</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>2025 Car Cult Rally Championship</p>
+        <p>&copy; mateushhh </p>
+    </footer>
+
+    <script src="js/results.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
