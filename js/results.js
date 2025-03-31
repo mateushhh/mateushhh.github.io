@@ -48,7 +48,7 @@ function processDriversData(rawData, resultType) {
         const time = parseInt(getStageTime(row, resultType)) || 0;
 
         return { driver, team, time, dnf: time === 0 };
-    }).filter(Boolean); // Usuwamy null (czyli te wiersze, które miały pustą nazwę kierowcy)
+    }).filter(Boolean);
 
     return driversData
         .sort((a, b) => {
@@ -75,27 +75,33 @@ function processTeamsData(rawData, resultType) {
         const time = parseInt(getStageTime(row, resultType)) || 0;
 
         if (!teams[team]) {
-            teams[team] = { team, time: 0, dnf: false, driversCount: 0 };
+            teams[team] = {
+                team,
+                bestTime: Infinity, // Początkowo ustawiamy na nieskończoność
+                hasFinished: false  // Flaga, czy przynajmniej jeden kierowca ukończył
+            };
         }
 
-        teams[team].time += time;
-        teams[team].driversCount++;
-
-        if (time === 0) {
-            teams[team].dnf = true;
+        if (time > 0) {
+            teams[team].hasFinished = true;
+            if (time < teams[team].bestTime) {
+                teams[team].bestTime = time;
+            }
         }
     });
 
     return Object.values(teams)
         .sort((a, b) => {
-            if (a.dnf && !b.dnf) return 1;
-            if (!a.dnf && b.dnf) return -1;
-            return a.time - b.time;
+            // Drużyny z DNF idą na koniec
+            if (!a.hasFinished && b.hasFinished) return 1;
+            if (a.hasFinished && !b.hasFinished) return -1;
+            // Sortuj po najlepszym czasie
+            return a.bestTime - b.bestTime;
         })
-        .map(({ team, time, dnf }, index) => [
-            dnf ? "-" : index + 1,
+        .map(({ team, bestTime, hasFinished }, index) => [
+            hasFinished ? index + 1 : "-",  // Pozycja (lub "-" jeśli DNF)
             team,
-            dnf ? "DNF" : formatTime(time)
+            hasFinished ? formatTime(bestTime) : "DNF"  // Czas lub DNF
         ]);
 }
 
