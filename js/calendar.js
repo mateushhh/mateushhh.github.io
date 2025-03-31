@@ -49,7 +49,7 @@ function renderEvents(events) {
         }
         
         eventCard.innerHTML = `
-            <div class="event-image" style="background-image: url('assets/${event.image}')"></div>
+            <div class="event-image" style="background-image: url('${event.image}')"></div>
             <div class="event-info">
                 <div class="event-date">${event.date}</div>
                 <h3 class="event-title">${event.name}</h3>
