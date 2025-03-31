@@ -194,6 +194,10 @@ footer {
 }
 
 /* Results & Standings */
+#results-filter {
+    text-align: center;
+}
+
 .tabs {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid #ddd;
