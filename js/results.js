@@ -30,11 +30,9 @@ async function processResults() {
 
     const selectedType = document.querySelector('input[name="resultType"]:checked').value;
     
-    // Procesowanie wyników dla kierowców
     const driversData = processDriversData(rawData, selectedType);
     displayTable('drivers-standings', driversData);
 
-    // Procesowanie wyników dla drużyn
     const teamsData = processTeamsData(rawData, selectedType);
     displayTable('teams-standings', teamsData);
 }
@@ -77,33 +75,40 @@ function processTeamsData(rawData, resultType) {
         if (!teams[team]) {
             teams[team] = {
                 team,
-                bestTime: Infinity, // Początkowo ustawiamy na nieskończoność
-                hasFinished: false  // Flaga, czy przynajmniej jeden kierowca ukończył
+                totalTime: 0,
+                count: 0,
+                hasFinished: false
             };
         }
 
         if (time > 0) {
             teams[team].hasFinished = true;
-            if (time < teams[team].bestTime) {
-                teams[team].bestTime = time;
-            }
+            teams[team].totalTime += time;
+            teams[team].count += 1;
         }
     });
 
     return Object.values(teams)
+        .map(teamData => {
+            const avgTime = teamData.hasFinished ? Math.floor(teamData.totalTime / teamData.count) : 0;
+            return {
+                team: teamData.team,
+                avgTime,
+                hasFinished: teamData.hasFinished
+            };
+        })
         .sort((a, b) => {
-            // Drużyny z DNF idą na koniec
             if (!a.hasFinished && b.hasFinished) return 1;
             if (a.hasFinished && !b.hasFinished) return -1;
-            // Sortuj po najlepszym czasie
-            return a.bestTime - b.bestTime;
+            return a.avgTime - b.avgTime;
         })
-        .map(({ team, bestTime, hasFinished }, index) => [
-            hasFinished ? index + 1 : "-",  // Pozycja (lub "-" jeśli DNF)
+        .map(({ team, avgTime, hasFinished }, index) => [
+            hasFinished ? index + 1 : "-",
             team,
-            hasFinished ? formatTime(bestTime) : "DNF"  // Czas lub DNF
+            hasFinished ? formatTime(avgTime) : "DNF"
         ]);
 }
+
 
 function getStageTime(row, resultType) {
     const stageIndex = {
