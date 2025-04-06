@@ -64,37 +64,65 @@ function processDriversData(rawData, resultType) {
 
 
 function processTeamsData(rawData, resultType) {
+    const stageIndices = {
+        "SS1": 4, "SS2": 5, "SS3": 6, "SS4": 7, "SS5": 8, "SS6": 9,
+        "SS7": 10, "SS8": 11, "SS9": 12, "SS10": 13, "SS11": 14, "SS12": 15
+    };
+
     const teams = {};
 
     rawData.slice(1).forEach(row => {
-        if (row.length < 4) return;
-
         const team = row[2];
-        const time = parseInt(getStageTime(row, resultType)) || 0;
+        if (!team) return;
 
         if (!teams[team]) {
             teams[team] = {
-                team,
-                totalTime: 0,
-                count: 0,
+                stageSums: {},
+                stageCounts: {},
                 hasFinished: false
             };
         }
 
-        if (time > 0) {
-            teams[team].hasFinished = true;
-            teams[team].totalTime += time;
-            teams[team].count += 1;
-        }
+        // Loop through each stage if overall is selected and calculate the sum of average times from each stage.
+        const stagesToConsider = resultType === "overall"
+            ? Object.values(stageIndices)
+            : [resultType === "overall" ? 3 : stageIndices[resultType]];
+
+        stagesToConsider.forEach(index => {
+            const time = parseInt(row[index]) || 0;
+            if (time > 0) {
+                teams[team].hasFinished = true;
+                if (!teams[team].stageSums[index]) {
+                    teams[team].stageSums[index] = 0;
+                    teams[team].stageCounts[index] = 0;
+                }
+                teams[team].stageSums[index] += time;
+                teams[team].stageCounts[index] += 1;
+            }
+        });
     });
 
-    return Object.values(teams)
-        .map(teamData => {
-            const avgTime = teamData.hasFinished ? Math.floor(teamData.totalTime / teamData.count) : 0;
+    return Object.entries(teams)
+        .map(([team, data]) => {
+            let totalAvg = 0;
+
+            if (resultType === "overall") {
+                for (const stageIndex in data.stageSums) {
+                    const count = data.stageCounts[stageIndex];
+                    if (count > 0) {
+                        totalAvg += Math.floor(data.stageSums[stageIndex] / count);
+                    }
+                }
+            } else {
+                const stageIndex = resultType === "overall" ? 3 : stageIndices[resultType];
+                const count = data.stageCounts[stageIndex] || 0;
+                totalAvg = count > 0 ? Math.floor(data.stageSums[stageIndex] / count) : 0;
+            }
+
             return {
-                team: teamData.team,
-                avgTime,
-                hasFinished: teamData.hasFinished
+                team,
+                avgTime: totalAvg,
+                hasFinished: data.hasFinished
             };
         })
         .sort((a, b) => {
@@ -108,6 +136,7 @@ function processTeamsData(rawData, resultType) {
             hasFinished ? formatTime(avgTime) : "DNF"
         ]);
 }
+
 
 
 function getStageTime(row, resultType) {
