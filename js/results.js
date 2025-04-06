@@ -48,28 +48,37 @@ function processDriversData(rawData, resultType) {
 
         const driver = row[1];
         const team = row[2];
+        const time = parseInt(getStageTime(row, resultType)) || 0;
+        const dnf = time === 0;
+
+        // Liczba ukończonych OS-ów (dla overall i pojedynczych stagów)
         const stageCount = Object.values(stageIndices)
             .map(i => parseInt(row[i]) || 0)
             .filter(time => time > 0).length;
 
-        const time = parseInt(getStageTime(row, resultType)) || 0;
-
-        return { driver, team, time, stageCount };
+        return { driver, team, time, dnf, stageCount };
     }).filter(Boolean);
 
-    return driversData
-        .sort((a, b) => {
+    // Sortowanie
+    driversData.sort((a, b) => {
+        if (resultType === "overall") {
             if (a.stageCount !== b.stageCount) return b.stageCount - a.stageCount;
-            return a.time - b.time;
-        })
-        .map(({ driver, team, time, stageCount }, index) => [
-            time === 0 ? "-" : index + 1,
-            driver,
-            team,
-            time === 0 ? "DNS" : formatTime(time),
-            `${stageCount}/12`
-        ]);
+        }
+        if (a.dnf && !b.dnf) return 1;
+        if (!a.dnf && b.dnf) return -1;
+        return a.time - b.time;
+    });
+
+    // Mapowanie na wiersze tabeli
+    return driversData.map(({ driver, team, time, dnf, stageCount }, index) => {
+        const place = dnf ? "-" : index + 1;
+        const timeText = dnf ? "DNS" : formatTime(time);
+        const stageCountText = `${stageCount}/12`;  // Zawsze pokazujemy x/12
+        return [place, driver, team, timeText, stageCountText];
+    });
 }
+
+
 
 
 
