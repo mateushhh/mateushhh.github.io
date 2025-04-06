@@ -38,29 +38,39 @@ async function processResults() {
 }
 
 function processDriversData(rawData, resultType) {
+    const stageIndices = {
+        "SS1": 4, "SS2": 5, "SS3": 6, "SS4": 7, "SS5": 8, "SS6": 9,
+        "SS7": 10, "SS8": 11, "SS9": 12, "SS10": 13, "SS11": 14, "SS12": 15
+    };
+
     const driversData = rawData.slice(1).map(row => {
         if (!row[1]) return null;
 
         const driver = row[1];
         const team = row[2];
+        const stageCount = Object.values(stageIndices)
+            .map(i => parseInt(row[i]) || 0)
+            .filter(time => time > 0).length;
+
         const time = parseInt(getStageTime(row, resultType)) || 0;
 
-        return { driver, team, time, dnf: time === 0 };
+        return { driver, team, time, stageCount };
     }).filter(Boolean);
 
     return driversData
         .sort((a, b) => {
-            if (a.dnf && !b.dnf) return 1;
-            if (!a.dnf && b.dnf) return -1;
+            if (a.stageCount !== b.stageCount) return b.stageCount - a.stageCount;
             return a.time - b.time;
         })
-        .map(({ driver, team, time, dnf }, index) => [
-            dnf ? "-" : index + 1,
+        .map(({ driver, team, time, stageCount }, index) => [
+            time === 0 ? "-" : index + 1,
             driver,
             team,
-            dnf ? "DNS" : formatTime(time)
+            time === 0 ? "DNS" : formatTime(time),
+            `${stageCount}/12`
         ]);
 }
+
 
 
 function processTeamsData(rawData, resultType) {
