@@ -58,7 +58,7 @@ function processDriversData(rawData, resultType) {
             dnf ? "-" : index + 1,
             driver,
             team,
-            dnf ? "DNF" : formatTime(time)
+            dnf ? "DNS" : formatTime(time)
         ]);
 }
 
@@ -133,7 +133,7 @@ function processTeamsData(rawData, resultType) {
         .map(({ team, avgTime, hasFinished }, index) => [
             hasFinished ? index + 1 : "-",
             team,
-            hasFinished ? formatTime(avgTime) : "DNF"
+            hasFinished ? formatTime(avgTime) : "DNS"
         ]);
 }
 
@@ -167,7 +167,7 @@ function displayTable(tableId, data) {
 }
 
 function formatTime(ms) {
-    if (ms === 0) return "DNF";
+    if (ms === 0) return "DNS";
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     const milliseconds = ms % 1000;
