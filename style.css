@@ -68,3 +68,25 @@
 .right-side .terminal {
     height: 50%
 }
+
+.right-side .terminal {
+    display: grid;
+    place-items: center;
+}
+
+.image-container {
+    background-color: #bc3908;
+    line-height: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.image-container img {
+  filter: grayscale(100%) contrast(170%) brightness(90%);
+  image-rendering: pixelated;
+  mix-blend-mode: multiply;
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
